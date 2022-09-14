@@ -6,7 +6,7 @@ from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
 from .warmup_scheduler import GradualWarmupScheduler
 
 from .visualization import *
-
+from torchvision.models.resnet import resnet152
 def get_optimizer(hparams, models):
     eps = 1e-8
     parameters = []

@@ -1,5 +1,5 @@
 import torch
-from torchsearchsorted import searchsorted
+from torch import searchsorted
 
 __all__ = ['render_rays']
 
@@ -39,7 +39,7 @@ def sample_pdf(bins, weights, N_importance, det=False, eps=1e-5):
         u = torch.rand(N_rays, N_importance, device=bins.device)
     u = u.contiguous()
 
-    inds = searchsorted(cdf, u, side='right')
+    inds = searchsorted(cdf, u, right=True)
     below = torch.clamp_min(inds-1, 0)
     above = torch.clamp_max(inds, N_samples_)
 
@@ -205,7 +205,7 @@ def render_rays(models,
 
     xyz_coarse_sampled = rays_o.unsqueeze(1) + \
                          rays_d.unsqueeze(1) * z_vals.unsqueeze(2) # (N_rays, N_samples, 3)
-
+    print(xyz_coarse_sampled.shape,rays_d.shape,dir_embedded.shape,z_vals.shape)
     if test_time:
         weights_coarse = \
             inference(model_coarse, embedding_xyz, xyz_coarse_sampled, rays_d,
